@@ -42,7 +42,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     install_requires=[
-        "ai-models>=0.3.6",
+        "ai-models>=0.2.13",
         "torch>=2.0.0",
         "torch_harmonics==0.6.2",
         "ruamel.yaml>=0.17.21",

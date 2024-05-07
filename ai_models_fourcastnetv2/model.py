@@ -266,11 +266,11 @@ class FourCastNetv2(Model):
         
         if isinstance(all_fields, list):
             all_fields_sfc = all_fields[0]
-            all_fields_sfc = all_fields_sfc[self.param_sfc_xr]
+            all_fields_sfc = all_fields_sfc[self.param_sfc_xr].sortby('latitude', ascending=False)
             
             all_fields_pl = all_fields[1]
             params, levels = self.param_level_pl
-            all_fields_pl = all_fields_pl.sel(isobaricInhPa=levels)[params]
+            all_fields_pl = all_fields_pl.sel(isobaricInhPa=levels)[params].sortby('latitude', ascending=False)
             all_fields_pl_list = []
             for p in self.ordering_xr[8:]:
                 param, level = p[0], p[1:]
@@ -375,7 +375,8 @@ class FourCastNetv2(Model):
                 
                 steps = np.arange(6, self.lead_time + 6, 6)    
                 times = [self.all_fields[1].time.values[0] + np.timedelta64(steps[i], 'h') for i in range(len(steps))]
-                lat, lon = self.all_fields[0].latitude.values[::-1], self.all_fields[0].longitude.values
+                # remove [::-1] for lat as it should be ok now
+                lat, lon = self.all_fields[0].latitude.values, self.all_fields[0].longitude.values
                 saved_xarray = xr.Dataset(
                     data_vars=data_vars,
                     coords=dict(
